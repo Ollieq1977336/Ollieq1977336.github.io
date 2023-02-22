@@ -12,7 +12,7 @@
 
 <!-- The template for our big button -->
 
-<button on:click={buttonClick}>💵 Click me for ${formatNumber(getButtonClickValue(), 2)} 💵</button>
+<button on:click={buttonClick}>💵 Click me for £{formatNumber(getButtonClickValue(), 2)} 💵</button>
 
 <style>
    button {

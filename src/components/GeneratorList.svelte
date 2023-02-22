@@ -5,7 +5,7 @@
 
 <!-- Layout for a list of generator upgrades -->
 <div>
-   <h2>Generators</h2>
+   <h2>Upgrades!</h2>
    {#each generators as generator}
       <Generator {generator} />
    {/each}

@@ -5,7 +5,7 @@
    import GeneratorList from "../components/GeneratorList.svelte";
 </script>
 
-<h1>Coding Company Simulator!</h1>
+<h1>Welcome To Coding Company Simulator!</h1>
 <p>
    Goal: Get the most amount of money possible!
 </p>
