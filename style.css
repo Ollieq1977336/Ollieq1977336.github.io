@@ -54,3 +54,8 @@ body {
 .button-container {
   text-align: center;
 }
+
+/* Set the background color */
+body {
+  background-color: skyblue;
+}
