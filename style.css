@@ -1,3 +1,40 @@
+/* Add drag-over class for the drop-zone when dragging a file over it */
+.drag-over {
+  border-color: #007BFF;
+}
+
+/* Style the drop-zone */
+.drop-zone {
+  cursor: pointer;
+  padding: 20px;
+  border: 2px dashed #ccc;
+  margin-bottom: 10px;
+}
+
+/* Remove default list style for the file names list */
+#fileNames {
+  list-style: none;
+  padding: 0;
+}
+
+/* Style each item in the file names list */
+#fileNames li {
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Add spacing to the text editor */
+#editor {
+  width: 100%;
+  resize: vertical;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+/* Keep your existing styles */
 /* Set font for all elements */
 body {
   font-family: 'Quicksand', sans-serif;

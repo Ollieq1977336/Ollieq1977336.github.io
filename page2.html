@@ -15,57 +15,20 @@
 
     <h1 class="title">Simple Text Editor</h1>
 
-    <div class="button-container">
-        <button onclick="openFile()">Open File</button>
-        <input type="file" id="fileInput" style="display: none;" accept=".txt,.md,.html">
-        <div id="fileNames"></div>
+    <div class="drop-zone" id="dropZone" ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
+        <p>Click or drag a text file here to open</p>
+        <p>Supported file types: .txt, .md, .html</p>
     </div>
 
     <textarea id="editor" rows="10" cols="80">Page content goes here.</textarea>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const editor = document.getElementById('editor');
-            const fileInput = document.getElementById('fileInput');
-            const fileNames = document.getElementById('fileNames');
+    <div class="button-container">
+        <input type="file" id="fileInput" style="display: none;" accept=".txt,.md,.html">
+        <button onclick="openFile()">Open File</button>
+        <div id="fileNames"></div>
+        <button onclick="downloadFile()">Download</button>
+    </div>
 
-            // Function to handle file input change event
-            fileInput.addEventListener('change', function (event) {
-                const file = event.target.files[0];
-                readFileContent(file);
-            });
-
-            // Function to read the content of the file and display it in the editor
-            function readFileContent(file) {
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    const content = event.target.result;
-                    editor.value = content;
-                };
-                reader.readAsText(file);
-                fileNames.innerHTML = `Opened file: ${file.name}`;
-            }
-
-            // Function to trigger file selection
-            function openFile() {
-                fileInput.click();
-            }
-        });
-    </script>
-
-    <style>
-        body {
-            font-family: 'Quicksand', sans-serif;
-        }
-
-        .button-container {
-            margin-bottom: 10px;
-        }
-
-        #editor {
-            width: 100%;
-            resize: vertical;
-        }
-    </style>
+    <script src="script.js"></script>
 </body>
 </html>
