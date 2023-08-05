@@ -58,10 +58,4 @@ document.addEventListener('DOMContentLoaded', function () {
         a.click();
         URL.revokeObjectURL(url);
     }
-
-    // Function to handle the "Download" button click
-    const downloadButton = document.getElementById('downloadButton');
-    downloadButton.addEventListener('click', function () {
-        downloadFile();
-    });
 });

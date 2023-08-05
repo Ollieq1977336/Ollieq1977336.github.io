@@ -1,40 +1,3 @@
-/* Add drag-over class for the drop-zone when dragging a file over it */
-.drag-over {
-  border-color: #007BFF;
-}
-
-/* Style the drop-zone */
-.drop-zone {
-  cursor: pointer;
-  padding: 20px;
-  border: 2px dashed #ccc;
-  margin-bottom: 10px;
-}
-
-/* Remove default list style for the file names list */
-#fileNames {
-  list-style: none;
-  padding: 0;
-}
-
-/* Style each item in the file names list */
-#fileNames li {
-  margin-bottom: 5px;
-  color: #333;
-}
-
-/* Add spacing to the text editor */
-#editor {
-  width: 100%;
-  resize: vertical;
-  margin-top: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-}
-
-/* Keep your existing styles */
 /* Set font for all elements */
 body {
   font-family: 'Quicksand', sans-serif;
@@ -63,15 +26,29 @@ body {
   color: black;
 }
 
-/* Style the why-create-website section */
-.why-create-website {
-  margin: 20px 0;
+/* Style the drop zone for dragging files */
+.drop-zone {
+  border: 2px dashed #333;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  text-align: center;
+  max-width: 400px;
 }
 
-/* Style the title */
-.title {
-  font-weight: 700;
+/* Style the textarea for the text editor */
+#editor {
+  resize: none;
+  border: 1px solid #333;
+  padding: 10px;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Style the word and letter count section */
+.word-letter-count {
   text-align: center;
+  margin: 10px;
 }
 
 /* Style the button */
@@ -95,4 +72,22 @@ body {
 /* Set the background color */
 body {
   background-color: skyblue;
+}
+
+/* Style the loading wheel */
+.loading-wheel {
+  text-align: center;
+  margin: 20px auto;
+  display: none;
+}
+
+.loading-wheel img {
+  animation: spin 2s linear infinite;
+  max-width: 50px;
+}
+
+/* Animation for spinning the loading wheel */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

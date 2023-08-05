@@ -1,9 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple Text Editor</title>
+    <title>Page 2</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Add CSS styles for the loading wheel */
+        .loading-wheel {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-image: url('loading_wheel.gif');
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: spin 1s infinite linear;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="navbar">
@@ -13,22 +34,131 @@
         <a href="page3.html">Page 3</a>
     </div>
 
-    <h1 class="title">Simple Text Editor</h1>
+    <h1 class="title">Page 2</h1>
+
+    <p>Page 2 content goes here.</p>
 
     <div class="drop-zone" id="dropZone" ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
-        <p>Click or drag a text file here to open</p>
-        <p>Supported file types: .txt, .md, .html</p>
+        <label for="fileInput" id="dropAreaLabel">Drag a file here! Supported file types: .txt, .md, .html</label>
+        <input type="file" id="fileInput" style="display: none;" accept=".txt,.md,.html">
     </div>
 
-    <textarea id="editor" rows="10" cols="80">Page content goes here.</textarea>
+    <textarea id="editor" rows="10" cols="80" onfocus="updateWordLetterCount()" oninput="updateWordLetterCount()"></textarea>
+
+    <div class="word-letter-count" id="wordLetterCount"></div>
 
     <div class="button-container">
-        <input type="file" id="fileInput" style="display: none;" accept=".txt,.md,.html">
-        <button onclick="openFile()">Open File</button>
-        <div id="fileNames"></div>
         <button onclick="downloadFile()">Download</button>
     </div>
 
-    <script src="script.js"></script>
+    <div id="loadingMessage"></div>
+
+    <!-- Add the audio elements for the pop and ding sounds -->
+    <audio id="popSound">
+        <source src="pop_sound.wav" type="audio/wav">
+    </audio>
+
+    <audio id="dingSound">
+        <source src="ding_sound.wav" type="audio/wav">
+    </audio>
+
+    <script>
+        let currentFile;
+        const fileInput = document.getElementById('fileInput');
+        const dropZone = document.getElementById('dropZone');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const wordLetterCount = document.getElementById('wordLetterCount');
+        const editor = document.getElementById('editor');
+
+        // Function to handle file drop event
+        function handleDrop(event) {
+            event.preventDefault();
+            const file = event.dataTransfer.files[0];
+            readFileContent(file);
+            dropZone.classList.remove('drag-over');
+        }
+
+        // Function to handle dragover event
+        function handleDragOver(event) {
+            event.preventDefault();
+            dropZone.classList.add('drag-over');
+        }
+
+        // Function to read the content of the file and display it with typing animation
+        function readFileContent(file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const content = event.target.result;
+                animateTyping(content, 0); // Start the typing animation with character index at 0
+            };
+            reader.readAsText(file);
+            currentFile = file;
+        }
+
+        // Function to animate typing effect with dynamically adjusting interval
+        function animateTyping(text, charIndex) {
+            editor.value = text.slice(0, charIndex); // Update the editor content with the typed characters
+            updateWordLetterCount()
+            const progressPercent = Math.floor((charIndex / text.length) * 100);
+            loadingMessage.innerHTML = `Loading ${currentFile.name} ${progressPercent}% <div class="loading-wheel"></div>`;
+            const interval = calculateInterval(text.length);
+
+            if (charIndex < text.length) {
+                // Play the pop sound for every letter
+                const popSound = document.getElementById('popSound');
+                popSound.currentTime = 0; // Reset the audio to the beginning before playing
+                popSound.play();
+
+                setTimeout(() => {
+                    animateTyping(text, charIndex + 1); // Recursive call to animate next character
+                }, interval);
+            } else {
+                loadingMessage.textContent = ''; // Hide the loading message when animation is complete
+                editor.value = text; // Set the editor content to the complete text
+                updateWordLetterCount(); // Show actual count when loading is complete
+
+                // Play the ding sound when the typing animation is complete
+                const dingSound = document.getElementById('dingSound');
+                dingSound.currentTime = 0; // Reset the audio to the beginning before playing
+                dingSound.play();
+            }
+        }
+
+        // Function to calculate the typing interval based on text length
+        function calculateInterval(textLength) {
+            // Adjust the baseInterval based on your preference
+            const baseInterval = 1; // milliseconds
+            const maxInterval = 1; // milliseconds
+            const minInterval = 1; // milliseconds
+            const interval = baseInterval + Math.log10(textLength) * 10;
+            return Math.min(maxInterval, Math.max(minInterval, interval));
+        }
+
+        // Function to handle file input change event
+        fileInput.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            readFileContent(file);
+        });
+
+        // Function to trigger file download
+        function downloadFile() {
+            const content = editor.value;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentFile ? currentFile.name : 'edited_file.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Function to update the word and letter count in the editor
+        function updateWordLetterCount() {
+            const currentText = editor.value;
+            const wordCount = currentText.trim().split(/\s+/).length;
+            const letterCount = currentText.replace(/\s+/g, '').length;
+            wordLetterCount.textContent = `Letters: ${letterCount} | Words: ${wordCount}`;
+        }
+    </script>
 </body>
 </html>
